@@ -41,17 +41,21 @@ class BasketActivity : AppCompatActivity() {
             jsonParse(res)
             Log.d("takip list:", foodList.size.toString())
             btn_basket.text = "${calculatePrice()} ${"\u20BA"}"
-        }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
+        }, Response.ErrorListener { Log.d("lanet takip hata: ", "Veri okuma") })
 
         Volley.newRequestQueue(this@BasketActivity).add(req)
+
+
     }
 
     fun jsonParse(res:String){
+        foodList= ArrayList()
+
         try {
-            foodList= ArrayList()
 
             val jsonObj= JSONObject(res)
             val foods =jsonObj.getJSONArray("sepet_yemekler")
+            Log.d("lanet", ""+foods.length().toString())
 
             for(i in 0 until foods.length()){
                 val f=foods.getJSONObject(i)
@@ -72,13 +76,16 @@ class BasketActivity : AppCompatActivity() {
                 foodList.add(food)
             }
 
-            adapter= BasketFoodsAdapter(this@BasketActivity, foodList)
-            rv_basket.adapter=adapter
 
         }catch (e: JSONException){
             Log.d("takip hata:","parse hatası")
             e.printStackTrace()
         }
+
+
+        adapter= BasketFoodsAdapter(this@BasketActivity, foodList)
+        rv_basket.adapter=adapter
+
     }
 
     fun calculatePrice():Int{

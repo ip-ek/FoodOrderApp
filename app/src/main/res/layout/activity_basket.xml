@@ -31,7 +31,7 @@
         android:id="@+id/btn_basket"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="5 TL"
+        android:text="SEPET BOŞ"
         android:textStyle="bold"
         android:textSize="25sp"
         app:cornerRadius="5dp"

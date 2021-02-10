@@ -56,16 +56,16 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
 
         holder.card_delete.setOnClickListener {
             deleteFromBasket(food)
+
         }
     }
 
     fun deleteFromBasket(food:BasketFoods){
         val url="http://kasimadalan.pe.hu/yemekler/delete_sepet_yemek.php"
         val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
-            Log.d("Takip ekle cevap", res)
-            //notifyDataSetChanged()
-            allOrders()
-        }, Response.ErrorListener { Log.d("Takip ekle","hata") }){
+            Log.d("takip sil cevap", res)
+            (mContext as BasketActivity).allOrders() //the best solution ever
+        }, Response.ErrorListener { Log.d("Takip sil","hata") }){
             override fun getParams(): MutableMap<String, String> {
                 val params=HashMap<String,String>()
                 params["yemek_id"]=food.yemek_id.toString()
@@ -74,55 +74,11 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
         }
 
         Volley.newRequestQueue(mContext).add(req)
+        //notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
         return foodList.size
-    }
-
-    fun allOrders(){
-        val url="http://kasimadalan.pe.hu/yemekler/tum_sepet_yemekler.php"
-
-        val req = StringRequest(Request.Method.GET, url, Response.Listener { res->
-            Log.d("takip veri okuma: ", res)
-            jsonParse(res)
-        }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
-
-        Volley.newRequestQueue(mContext).add(req)
-    }
-
-    fun jsonParse(res:String){
-        try {
-            foodList= ArrayList()
-
-            val jsonObj= JSONObject(res)
-            val foods =jsonObj.getJSONArray("sepet_yemekler")
-
-            for(i in 0 until foods.length()){
-                val f=foods.getJSONObject(i)
-
-                val yemek_id=f.getInt("yemek_id")
-                val yemek_adi=f.getString("yemek_adi")
-                val yemek_resim_adi = f.getString("yemek_resim_adi")
-                val yemek_fiyat=f.getInt("yemek_fiyat")
-                val yemek_siparis_adet=f.getInt("yemek_siparis_adet")
-
-                Log.d(" takip yemek id: ", yemek_id.toString())
-                Log.d(" takip yemek adi: ", yemek_adi)
-                Log.d(" takip yemek resim adi: ", yemek_resim_adi)
-                Log.d(" takip yemek fiyat: ", yemek_fiyat.toString())
-                Log.d("takip","**************************************\n")
-
-                val food=BasketFoods(yemek_id, yemek_adi, yemek_resim_adi, yemek_fiyat,yemek_siparis_adet)
-                foodList.add(food)
-            }
-
-            notifyDataSetChanged()
-
-        }catch (e: JSONException){
-            Log.d("takip hata:","parse hatası")
-            e.printStackTrace()
-        }
     }
 
 }
