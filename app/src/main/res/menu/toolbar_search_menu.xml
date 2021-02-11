@@ -9,4 +9,11 @@
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
+
+    <item
+        android:id="@+id/action_list"
+        android:icon="@drawable/filter_list"
+        android:title="Filtreleme"
+        app:showAsAction="always"
+        />
 </menu>
