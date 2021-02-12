@@ -75,6 +75,7 @@ class BasketActivity : AppCompatActivity() {
             Log.d("takip hata:","parse hatası")
             e.printStackTrace()
         }
+        listConcat()
 
         adapter= BasketFoodsAdapter(this@BasketActivity, foodList)
         rv_basket.adapter=adapter
@@ -87,4 +88,23 @@ class BasketActivity : AppCompatActivity() {
         }
         return price
     } //calculatePrice
+
+    fun listConcat(){
+        var tmpList:ArrayList<BasketFoods>
+        tmpList= ArrayList()
+        var flag:Boolean
+        for(i in 0 until foodList.size){
+            flag=false
+            tmpList.forEach { each->
+                if (each.yemek_id.equals(foodList[i].yemek_id)){
+                    each.yemek_siparis_adet+=foodList[i].yemek_siparis_adet
+                    flag=true
+                }
+            }
+            if (!flag){
+                tmpList.add(foodList[i])
+            }
+        }
+        foodList= tmpList.clone() as ArrayList<BasketFoods>
+    }
 }
