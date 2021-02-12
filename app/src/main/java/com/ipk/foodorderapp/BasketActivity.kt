@@ -3,6 +3,9 @@ package com.ipk.foodorderapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -38,7 +41,12 @@ class BasketActivity : AppCompatActivity() {
             Log.d("takip veri okuma: ", res)
             jsonParse(res)
             Log.d("takip list:", foodList.size.toString())
-            btn_basket.text = "${calculatePrice()} ${"\u20BA"}"
+            if (foodList.size>0){
+                btn_basket.text = "${calculatePrice()} ${"\u20BA"}"
+            }else{
+                btn_basket.text = this.getString(R.string.empty_basket)
+            }
+
         }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
 
         Volley.newRequestQueue(this@BasketActivity).add(req)
@@ -106,5 +114,46 @@ class BasketActivity : AppCompatActivity() {
             }
         }
         foodList= tmpList.clone() as ArrayList<BasketFoods>
-    }
+    } //listConcat
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.basket_delete_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    } //onCreateOptionsMenu
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.del_basket -> {
+                Log.d("takip", "sepetin silinmesi seçildi")
+                deleteBasket()
+            }
+            else -> {
+                Log.e("eroor", "Menu item hatası")
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    } //onOptionsItemSelected
+
+    fun deleteBasket(){
+        foodList.forEach { each->
+            deleteFromBasket(each)
+            allOrders()
+        }
+    } //deleteBasket
+
+    fun deleteFromBasket(food:BasketFoods){
+        val url=this.getString(R.string.deleteFromBasket)
+        val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
+            Log.d("takip sil cevap", res)
+
+        }, Response.ErrorListener { Log.d("Takip sil","hata") }){
+            override fun getParams(): MutableMap<String, String> {
+                val params=HashMap<String,String>()
+                params["yemek_id"]=food.yemek_id.toString()
+                return params
+            }
+        }
+        Volley.newRequestQueue(this).add(req)
+
+    } //deleteFromBasket
 }

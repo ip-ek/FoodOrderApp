@@ -14,6 +14,7 @@
     <string name="search">Ara</string>
     <string name="filter">Filtreleme</string>
     <string name="empty_basket">Sepet Boş</string>
+    <string name="delete_basket">Sepeti Sil</string>
 
     <string name="getAllBasket">http://kasimadalan.pe.hu/yemekler/tum_sepet_yemekler.php</string>
     <string name="deleteFromBasket">http://kasimadalan.pe.hu/yemekler/delete_sepet_yemek.php</string>
