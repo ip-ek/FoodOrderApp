@@ -16,9 +16,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_detailed_food.*
 
 class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): RecyclerView.Adapter<FoodsAdapter.CardHolder>() {
 
@@ -106,7 +104,6 @@ class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): Recycl
         val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
             Log.d("Takip ekle cevap", res)
             holder.card_detail.visibility=View.GONE
-            Snackbar.make(holder.btn_add, "${count} adet ${food.yemek_adi} eklendi.", Snackbar.LENGTH_SHORT).show()
             (mContext as MainActivity).updateFabText()
         }, Response.ErrorListener { Log.d("Takip ekle","hata") }){
             override fun getParams(): MutableMap<String, String> {

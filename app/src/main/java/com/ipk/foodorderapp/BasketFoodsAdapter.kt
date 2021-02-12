@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.card_basket.*
 
 class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoods>): RecyclerView.Adapter<BasketFoodsAdapter.CardHolder>() {
 
@@ -51,12 +53,7 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
         Picasso.get().load(url2).into(holder.card_img)
 
         holder.card_delete.setOnClickListener {
-            Snackbar.make(holder.card_delete, "${food.yemek_adi} sepetten silinsin mi?.", Snackbar.LENGTH_LONG)
-                .setAction("Evet"){view -> //butonu temsil ediyor
-                    //Snackbar.make(view, "${food.yemek_adi} silindi.", Snackbar.LENGTH_SHORT).show()
-                    deleteFromBasket(food)
-                }
-                .show()
+            deleteAlert(holder,food)
         }
     } //onBindViewHolder
 
@@ -64,7 +61,6 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
         val url=mContext.getString(R.string.deleteFromBasket)
         val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
             Log.d("takip sil cevap", res)
-
             (mContext as BasketActivity).allOrders() //the best solution ever
         }, Response.ErrorListener { Log.d("Takip sil","hata") }){
             override fun getParams(): MutableMap<String, String> {
@@ -82,4 +78,18 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
         return foodList.size
     } //getItemCount
 
+    fun deleteAlert(holder: CardHolder, food: BasketFoods){
+        val ad= AlertDialog.Builder(mContext)
+        ad.setTitle("Silme İsteği")
+        ad.setMessage("${food.yemek_adi} silinsin mi?")
+        ad.setIcon(R.drawable.delete_icon)
+        ad.setPositiveButton("Evet"){ d,i ->
+            //Snackbar.make(holder.card_delete, "Sepet silindi.", Snackbar.LENGTH_SHORT).show()
+            deleteFromBasket(food)
+        }
+        ad.setNegativeButton("Hayır"){ d,i ->
+            //Snackbar.make(holder.card_delete, "Silme işlemi iptal edildi!", Snackbar.LENGTH_SHORT).show()
+        }
+        ad.create().show()
+    } //deleteFood
 }

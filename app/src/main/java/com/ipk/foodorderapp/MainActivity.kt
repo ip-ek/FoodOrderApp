@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         sp = getSharedPreferences("FoodAppSh", Context.MODE_PRIVATE)
         editor=sp.edit()
 

@@ -133,11 +133,11 @@ class BasketActivity : AppCompatActivity() {
                 ad.setMessage("Tüm sepet silinsin mi?")
                 ad.setIcon(R.drawable.delete_icon)
                 ad.setPositiveButton("Evet"){ d,i ->
-                    Snackbar.make(basket_delete, "Sepet silindi.", Snackbar.LENGTH_SHORT).show()
+                    //Snackbar.make(basket_delete, "Sepet silindi.", Snackbar.LENGTH_SHORT).show()
                     deleteBasket()
                 }
                 ad.setNegativeButton("Hayır"){ d,i ->
-                    Snackbar.make(basket_delete, "Silme işlemi iptal edildi!", Snackbar.LENGTH_SHORT).show()
+                    //Snackbar.make(basket_delete, "Silme işlemi iptal edildi!", Snackbar.LENGTH_SHORT).show()
                 }
                 ad.create().show()
             }

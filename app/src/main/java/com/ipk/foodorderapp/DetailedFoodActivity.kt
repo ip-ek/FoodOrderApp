@@ -59,7 +59,7 @@ class DetailedFoodActivity : AppCompatActivity() {
         val url=this.getString(R.string.addToBasket)
         val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
             Log.d("Takip ekle cevap", res)
-            Snackbar.make(btn_add, "${count} adet ${food.yemek_adi} eklendi.", Snackbar.LENGTH_SHORT).show()
+            //Snackbar.make(btn_add, "${count} adet ${food.yemek_adi} eklendi.", Snackbar.LENGTH_SHORT).show()
             startActivity(Intent(this@DetailedFoodActivity,MainActivity::class.java))
         }, Response.ErrorListener { Log.d("Takip ekle","hata") }){
             override fun getParams(): MutableMap<String, String> {
