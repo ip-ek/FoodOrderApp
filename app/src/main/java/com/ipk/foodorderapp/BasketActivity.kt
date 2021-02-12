@@ -21,7 +21,7 @@ class BasketActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
 
-        toolbar_basket.title="Sepet"
+        toolbar_basket.title=this.getString(R.string.basket)
         setSupportActionBar(toolbar_basket)
 
         rv_basket.setHasFixedSize(true)
@@ -29,33 +29,28 @@ class BasketActivity : AppCompatActivity() {
 
         allOrders()
 
-
-
-    }
+    } //onCreate
 
     fun allOrders(){
-        val url="http://kasimadalan.pe.hu/yemekler/tum_sepet_yemekler.php"
+        val url=this.getString(R.string.getAllBasket)
 
         val req = StringRequest(Request.Method.GET, url, Response.Listener { res->
             Log.d("takip veri okuma: ", res)
             jsonParse(res)
             Log.d("takip list:", foodList.size.toString())
             btn_basket.text = "${calculatePrice()} ${"\u20BA"}"
-        }, Response.ErrorListener { Log.d("lanet takip hata: ", "Veri okuma") })
+        }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
 
         Volley.newRequestQueue(this@BasketActivity).add(req)
 
-
-    }
+    } //allOrders
 
     fun jsonParse(res:String){
         foodList= ArrayList()
 
         try {
-
             val jsonObj= JSONObject(res)
             val foods =jsonObj.getJSONArray("sepet_yemekler")
-            Log.d("lanet", ""+foods.length().toString())
 
             for(i in 0 until foods.length()){
                 val f=foods.getJSONObject(i)
@@ -76,17 +71,14 @@ class BasketActivity : AppCompatActivity() {
                 foodList.add(food)
             }
 
-
         }catch (e: JSONException){
             Log.d("takip hata:","parse hatası")
             e.printStackTrace()
         }
 
-
         adapter= BasketFoodsAdapter(this@BasketActivity, foodList)
         rv_basket.adapter=adapter
-
-    }
+    } //jsonParse
 
     fun calculatePrice():Int{
         var price=0
@@ -94,5 +86,5 @@ class BasketActivity : AppCompatActivity() {
             price+=foodList[i].yemek_fiyat*foodList[i].yemek_siparis_adet
         }
         return price
-    }
+    } //calculatePrice
 }

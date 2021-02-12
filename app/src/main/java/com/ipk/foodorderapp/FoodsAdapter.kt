@@ -46,19 +46,19 @@ class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): Recycl
             tw_count=view.findViewById(R.id.tw_count)
 
         }
-    }
+    } //CardHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
         return CardHolder(LayoutInflater.from(mContext).inflate(R.layout.card_design,parent,false))
-    }
+    } //onCreateViewHolder
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
         var food =foodList.get(position)
-        //holder.card_img
-        holder.card_price.text="${food.yemek_fiyat} ${"\u20BA"}"
+
+        holder.card_price.text="${food.yemek_fiyat} ${mContext.getString(R.string.TL)}"
         holder.card_name.text="${food.yemek_adi}"
 
-        val url2 = "http://kasimadalan.pe.hu/yemekler/resimler/${food.yemek_resim_adi}"
+        val url2 = "${mContext.getString(R.string.getPics)}${food.yemek_resim_adi}"
         Picasso.get().load(url2).into(holder.card_img)
 
         holder.card_view.setOnClickListener {
@@ -71,11 +71,11 @@ class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): Recycl
         }
 
         openners(holder, food)
-    }
+    } //onBindViewHolder
 
     override fun getItemCount(): Int {
         return foodList.size
-    }
+    } //getItemCount
 
     fun openners(holder:CardHolder, food: Foods){
         holder.btn_min.setOnClickListener {
@@ -101,9 +101,9 @@ class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): Recycl
     } //openners
 
     fun addToBasket(holder:CardHolder, food:Foods, count:String){
-        val url="http://kasimadalan.pe.hu/yemekler/insert_sepet_yemek.php"
-        val istek= object : StringRequest(Request.Method.POST,url, Response.Listener { cevap ->
-            Log.d("Takip ekle cevap", cevap)
+        val url=mContext.getString(R.string.addToBasket)
+        val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
+            Log.d("Takip ekle cevap", res)
             holder.card_detail.visibility=View.GONE
         }, Response.ErrorListener { Log.d("Takip ekle","hata") }){
             override fun getParams(): MutableMap<String, String> {
@@ -117,7 +117,7 @@ class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): Recycl
             }
         }
 
-        Volley.newRequestQueue(mContext).add(istek)
+        Volley.newRequestQueue(mContext).add(req)
     }// addToBasket
 
 }

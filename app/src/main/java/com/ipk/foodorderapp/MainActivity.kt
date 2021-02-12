@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         sp = getSharedPreferences("FoodAppSh", Context.MODE_PRIVATE)
         editor=sp.edit()
 
-        toolbar_main.title="Food App"
+        toolbar_main.title=this.getString(R.string.app_name)
         setSupportActionBar(toolbar_main)
 
         rv_main.setHasFixedSize(true)
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     } //onQueryTextChange
 
     fun allFoods(){
-        val url="http://kasimadalan.pe.hu/yemekler/tum_yemekler.php"
+        val url=this.getString(R.string.getAllFoods)
 
         val req = StringRequest(Request.Method.GET, url, Response.Listener { res->
             Log.d("takip veri okuma: ", res)
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     } //allFoods
 
     fun searcedFoods(src:String){
-        val url="http://kasimadalan.pe.hu/yemekler/tum_yemekler_arama.php"
+        val url=this.getString(R.string.searchFood)
 
         val req = object: StringRequest(Request.Method.POST, url, Response.Listener { res->
             Log.d("takip veri okuma: ", res)
@@ -160,7 +160,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         val ad=AlertDialog.Builder(this@MainActivity)
         ad.setTitle("Sırala:")
         //ad.setIcon(R.drawable.filter_list)
-        var items = arrayOf("Varsayılan","Ucuzdan Pahalıya","Pahalıdan Ucuza","A'dan Z'ye","Z'den A'ya")
+        var items = arrayOf(this.getString(R.string.def),this.getString(R.string.fromCheaper),this.getString(R.string.toCheaper),
+            this.getString(R.string.A_to_Z),this.getString(R.string.Z_to_A))
         var checkedItem = sp.getInt("listItem",0)
 
         ad.setSingleChoiceItems(items, checkedItem,
@@ -173,13 +174,13 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         4-> editor.putInt("listItem",4)
                     }
         })
-        ad.setPositiveButton("Uygula"){ d,i ->
+        ad.setPositiveButton(this.getString(R.string.apply)){ d,i ->
             //Snackbar.make(toolbar_main, "Filtre Ayarlandı!", Snackbar.LENGTH_LONG).show()
             editor.commit()
             if (sp.getInt("listItem",0)==0) allFoods()
             else updateAdapter()
         }
-        ad.setNegativeButton("İptal"){ d,i ->
+        ad.setNegativeButton(this.getString(R.string.cancel)){ d,i ->
             //Snackbar.make(toolbar_main, "Filtre Ayarlanmadı!", Snackbar.LENGTH_LONG).show()
         }
         ad.create().show()
@@ -189,13 +190,13 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         var checkedItem = sp.getInt("listItem",0)
 
         when(checkedItem){
-            0-> {//varsayılan
+            0-> {//default
                 //pass
             }
-            1-> foodList.sortBy { it.yemek_fiyat } //Ucuzdan Pahalıya
-            2-> foodList.sortByDescending { it.yemek_fiyat } //Pahalıdan Ucuza
-            3-> foodList.sortBy { it.yemek_adi } //A'dan Z'ye
-            4-> foodList.sortByDescending { it.yemek_adi } //Z'den A'ya
+            1-> foodList.sortBy { it.yemek_fiyat } //cheap to expensive
+            2-> foodList.sortByDescending { it.yemek_fiyat } //expensive to cheap
+            3-> foodList.sortBy { it.yemek_adi } //A to Z
+            4-> foodList.sortByDescending { it.yemek_adi } //Z to A
         }
 
         adapter= FoodsAdapter(this@MainActivity, foodList)

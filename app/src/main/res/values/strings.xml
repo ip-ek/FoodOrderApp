@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">FoodOrderApp</string>
+    <string name="TL">₺</string>
+    <string name="add">EKLE</string>
+    <string name="def">Varsayılan</string>
+    <string name="fromCheaper">Ucuzdan Pahalıya</string>
+    <string name="toCheaper">Pahalıdan Ucuza</string>
+    <string name="A_to_Z">A\'dan Z\'ye</string>
+    <string name="Z_to_A">Z\'den A\'ya</string>
+    <string name="apply">UYGULA</string>
+    <string name="cancel">İPTAL</string>
+    <string name="total">Toplam</string>
+    <string name="basket">SEPET</string>
+    <string name="search">Ara</string>
+    <string name="filter">Filtreleme</string>
+    <string name="empty_basket">Sepet Boş</string>
+
+    <string name="getAllBasket">http://kasimadalan.pe.hu/yemekler/tum_sepet_yemekler.php</string>
+    <string name="deleteFromBasket">http://kasimadalan.pe.hu/yemekler/delete_sepet_yemek.php</string>
+    <string name="addToBasket">http://kasimadalan.pe.hu/yemekler/insert_sepet_yemek.php</string>
+    <string name="searchFood">http://kasimadalan.pe.hu/yemekler/tum_yemekler_arama.php</string>
+    <string name="getAllFoods">http://kasimadalan.pe.hu/yemekler/tum_yemekler.php</string>
+    <string name="getPics">http://kasimadalan.pe.hu/yemekler/resimler/</string>
 </resources>

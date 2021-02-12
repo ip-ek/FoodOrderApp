@@ -25,7 +25,7 @@ class DetailedFoodActivity : AppCompatActivity() {
         toolbar_title.setText(food.yemek_adi)
         setSupportActionBar(toolbar_main)
 
-        detailed_price.text="${food.yemek_fiyat} ${"\u20BA"}"
+        detailed_price.text="${food.yemek_fiyat} ${this.getString(R.string.TL)}"
         val url2 = "http://kasimadalan.pe.hu/yemekler/resimler/${food.yemek_resim_adi}"
         Picasso.get().load(url2).into(detailed_image)
         totalUpdate()
@@ -46,18 +46,18 @@ class DetailedFoodActivity : AppCompatActivity() {
             addToBasket(food, detailed_count.text.toString())
         }
 
-    }
+    } //onCreate
 
     fun totalUpdate(){
-        detailed_price_count.text="${detailed_count.text} x ${food.yemek_fiyat} ${"\u20BA"}"
-        var toplam=detailed_count.text.toString().toInt()*food.yemek_fiyat
-        detailed_total_price.text="Toplam: ${toplam} ${"\u20BA"}"
-    }
+        detailed_price_count.text="${detailed_count.text} x ${food.yemek_fiyat} ${this.getString(R.string.TL)}"
+        var total=detailed_count.text.toString().toInt()*food.yemek_fiyat
+        detailed_total_price.text="${this.getString(R.string.total)}: ${total} ${this.getString(R.string.TL)}"
+    } //totalUpdate
 
     fun addToBasket(food:Foods, count:String){
-        val url="http://kasimadalan.pe.hu/yemekler/insert_sepet_yemek.php"
-        val istek= object : StringRequest(Request.Method.POST,url, Response.Listener { cevap ->
-            Log.d("Takip ekle cevap", cevap)
+        val url=this.getString(R.string.addToBasket)
+        val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
+            Log.d("Takip ekle cevap", res)
             startActivity(Intent(this@DetailedFoodActivity,MainActivity::class.java))
         }, Response.ErrorListener { Log.d("Takip ekle","hata") }){
             override fun getParams(): MutableMap<String, String> {
@@ -71,6 +71,6 @@ class DetailedFoodActivity : AppCompatActivity() {
             }
         }
 
-        Volley.newRequestQueue(this@DetailedFoodActivity).add(istek)
-    }
+        Volley.newRequestQueue(this@DetailedFoodActivity).add(req)
+    } //addToBasket
 }

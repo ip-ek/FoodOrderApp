@@ -135,7 +135,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:padding="12dp"
-        android:text="EKLE"
+        android:text="@string/add"
         android:textSize="25sp"
         app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"

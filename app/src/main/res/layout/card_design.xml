@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:padding="5dp"
-            android:text="EKLE"
+            android:text="@string/add"
             android:textSize="15sp"
             app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
