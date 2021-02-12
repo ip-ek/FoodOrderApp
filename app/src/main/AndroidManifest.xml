@@ -12,9 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BasketActivity"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".BasketActivity" />
         <activity android:name=".DetailedFoodActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
