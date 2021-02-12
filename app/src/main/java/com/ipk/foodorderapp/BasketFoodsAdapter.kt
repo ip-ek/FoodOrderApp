@@ -13,6 +13,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoods>): RecyclerView.Adapter<BasketFoodsAdapter.CardHolder>() {
@@ -50,8 +51,12 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
         Picasso.get().load(url2).into(holder.card_img)
 
         holder.card_delete.setOnClickListener {
-            deleteFromBasket(food)
-
+            Snackbar.make(holder.card_delete, "${food.yemek_adi} sepetten silinsin mi?.", Snackbar.LENGTH_LONG)
+                .setAction("Evet"){view -> //butonu temsil ediyor
+                    //Snackbar.make(view, "${food.yemek_adi} silindi.", Snackbar.LENGTH_SHORT).show()
+                    deleteFromBasket(food)
+                }
+                .show()
         }
     } //onBindViewHolder
 
@@ -59,6 +64,7 @@ class BasketFoodsAdapter(var mContext: Context, var foodList:ArrayList<BasketFoo
         val url=mContext.getString(R.string.deleteFromBasket)
         val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
             Log.d("takip sil cevap", res)
+
             (mContext as BasketActivity).allOrders() //the best solution ever
         }, Response.ErrorListener { Log.d("Takip sil","hata") }){
             override fun getParams(): MutableMap<String, String> {

@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_basket.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.card_basket.*
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -42,7 +45,7 @@ class BasketActivity : AppCompatActivity() {
             jsonParse(res)
             Log.d("takip list:", foodList.size.toString())
             if (foodList.size>0){
-                btn_basket.text = "${calculatePrice()} ${"\u20BA"}"
+                btn_basket.text = "${calculatePrice()} ${this.getString(R.string.TL)}"
             }else{
                 btn_basket.text = this.getString(R.string.empty_basket)
             }
@@ -125,7 +128,18 @@ class BasketActivity : AppCompatActivity() {
         when(item.itemId){
             R.id.del_basket -> {
                 Log.d("takip", "sepetin silinmesi seçildi")
-                deleteBasket()
+                val ad= AlertDialog.Builder(this@BasketActivity)
+                ad.setTitle("Silme İsteği")
+                ad.setMessage("Tüm sepet silinsin mi?")
+                ad.setIcon(R.drawable.delete_icon)
+                ad.setPositiveButton("Evet"){ d,i ->
+                    Snackbar.make(basket_delete, "Sepet silindi.", Snackbar.LENGTH_SHORT).show()
+                    deleteBasket()
+                }
+                ad.setNegativeButton("Hayır"){ d,i ->
+                    Snackbar.make(basket_delete, "Silme işlemi iptal edildi!", Snackbar.LENGTH_SHORT).show()
+                }
+                ad.create().show()
             }
             else -> {
                 Log.e("eroor", "Menu item hatası")

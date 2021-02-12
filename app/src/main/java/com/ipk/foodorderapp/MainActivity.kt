@@ -216,12 +216,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         val url=this.getString(R.string.getAllBasket)
 
         val req = StringRequest(Request.Method.GET, url, Response.Listener { res->
-            Log.d("lanet takip veri okuma: ", res)
+            Log.d("takip veri okuma: ", res)
             jsonParseBasket(res)
             amount=calculatePrice()
             guncelle()
-            Log.d("lanet takip list:", basketList.size.toString())
-            Log.d("lanet amount",amount.toString())
+            Log.d("takip list:", basketList.size.toString())
+            Log.d("amount",amount.toString())
         }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
 
         Volley.newRequestQueue(this@MainActivity).add(req)
@@ -230,7 +230,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     fun jsonParseBasket(res:String){
         basketList= ArrayList()
-        Log.d("lanet", "hello")
 
         try {
             val jsonObj= JSONObject(res)
@@ -265,7 +264,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     } //calculatePrice
 
     fun guncelle(){
-        Log.d("lanet amount fonk",amount.toString())
+        Log.d("amount fonk",amount.toString())
 
         if (amount==0){
             fab_main.shrink()
