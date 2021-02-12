@@ -19,15 +19,19 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_basket.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var foodList: ArrayList<Foods>
     private lateinit var adapter: FoodsAdapter
     private lateinit var sp:SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var basketList: ArrayList<BasketFoods>
+    var amount=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -43,12 +47,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         rv_main.layoutManager=LinearLayoutManager(this@MainActivity)
 
         allFoods()
+        updateFabText()
 
         fab_main.setOnClickListener{
             startActivity(Intent(this@MainActivity,BasketActivity::class.java))
         }
-
     } //onCreate
+
+    override fun onResume() {
+        updateFabText()
+        super.onResume()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_search_menu,menu)
@@ -202,4 +211,72 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         adapter= FoodsAdapter(this@MainActivity, foodList)
         rv_main.adapter=adapter
     } //updateAdapter
+
+    fun updateFabText(){ //all orders
+        val url=this.getString(R.string.getAllBasket)
+
+        val req = StringRequest(Request.Method.GET, url, Response.Listener { res->
+            Log.d("lanet takip veri okuma: ", res)
+            jsonParseBasket(res)
+            amount=calculatePrice()
+            guncelle()
+            Log.d("lanet takip list:", basketList.size.toString())
+            Log.d("lanet amount",amount.toString())
+        }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
+
+        Volley.newRequestQueue(this@MainActivity).add(req)
+
+    } //allOrders
+
+    fun jsonParseBasket(res:String){
+        basketList= ArrayList()
+        Log.d("lanet", "hello")
+
+        try {
+            val jsonObj= JSONObject(res)
+            val foods =jsonObj.getJSONArray("sepet_yemekler")
+
+            for(i in 0 until foods.length()){
+                val f=foods.getJSONObject(i)
+
+                val yemek_id=f.getInt("yemek_id")
+                val yemek_adi=f.getString("yemek_adi")
+                val yemek_resim_adi = f.getString("yemek_resim_adi")
+                val yemek_fiyat=f.getInt("yemek_fiyat")
+                val yemek_siparis_adet=f.getInt("yemek_siparis_adet")
+
+                val food=BasketFoods(yemek_id, yemek_adi, yemek_resim_adi, yemek_fiyat,yemek_siparis_adet)
+                basketList.add(food)
+            }
+
+        }catch (e: JSONException){
+            Log.d("takip hata:","parse hatası")
+            e.printStackTrace()
+        }
+
+    } //jsonParseBasket
+
+    fun calculatePrice():Int{
+        var price=0
+        for(i in 0 until basketList.size){
+            price+=basketList[i].yemek_fiyat*basketList[i].yemek_siparis_adet
+        }
+        return price
+    } //calculatePrice
+
+    fun guncelle(){
+        Log.d("lanet amount fonk",amount.toString())
+
+        if (amount==0){
+            fab_main.shrink()
+        }else{
+            fab_main.text=amount.toString()+"${this.getString(R.string.TL)}"
+            fab_main.extend()
+        }
+    } //guncelle
+
+
+
+
+
 }

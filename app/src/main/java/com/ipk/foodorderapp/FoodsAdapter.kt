@@ -105,6 +105,7 @@ class FoodsAdapter(var mContext: Context, var foodList:ArrayList<Foods>): Recycl
         val req= object : StringRequest(Request.Method.POST,url, Response.Listener { res ->
             Log.d("Takip ekle cevap", res)
             holder.card_detail.visibility=View.GONE
+            (mContext as MainActivity).updateFabText()
         }, Response.ErrorListener { Log.d("Takip ekle","hata") }){
             override fun getParams(): MutableMap<String, String> {
                 val params=HashMap<String,String>()

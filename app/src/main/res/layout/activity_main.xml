@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,10 +14,14 @@
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/green"
         android:clickable="true"
-        app:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/shopping_basket" />
+        app:icon="@drawable/shopping_basket"
+        app:iconTint="#FFFFFF"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_main"
