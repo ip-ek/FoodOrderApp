@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
                 Log.d(" takip yemek id: ", yemek_id.toString())
                 Log.d(" takip yemek adi: ", yemek_adi)
-                Log.d(" takip yemek resim adi: ", yemek_resim_adi)
+                Log.d(" takip yemek resim: ", yemek_resim_adi)
                 Log.d(" takip yemek fiyat: ", yemek_fiyat.toString())
                 Log.d("takip","**************************************\n")
 
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             Log.d("takip veri okuma: ", res)
             jsonParseBasket(res)
             amount=calculatePrice()
-            guncelle()
+            update()
             Log.d("takip list:", basketList.size.toString())
             Log.d("amount",amount.toString())
         }, Response.ErrorListener { Log.d("takip hata: ", "Veri okuma") })
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         return price
     } //calculatePrice
 
-    fun guncelle(){
+    fun update(){
         Log.d("amount fonk",amount.toString())
 
         if (amount==0){
@@ -274,10 +274,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             fab_main.text=amount.toString()+"${this.getString(R.string.TL)}"
             fab_main.extend()
         }
-    } //guncelle
-
-
-
-
+    } //update
 
 }

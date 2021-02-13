@@ -74,7 +74,7 @@ class BasketActivity : AppCompatActivity() {
 
                 Log.d(" takip yemek id: ", yemek_id.toString())
                 Log.d(" takip yemek adi: ", yemek_adi)
-                Log.d(" takip yemek resim adi: ", yemek_resim_adi)
+                Log.d(" takip yemek resim: ", yemek_resim_adi)
                 Log.d(" takip yemek fiyat: ", yemek_fiyat.toString())
                 Log.d("takip","**************************************\n")
 
@@ -149,17 +149,15 @@ class BasketActivity : AppCompatActivity() {
     } //onOptionsItemSelected
 
     fun deleteBasket(){
-        allOrders()
-        Log.d("takip", foodList.size.toString())
+        Log.d("takip lanet", foodList.size.toString())
         for(i in 0 until foodList.size){
             deleteFromBasket(foodList[i])
-            Log.d("takip", "say")
+            Log.d("takip lanet", "say")
         }
         foodList=ArrayList() //isteklerin karşılanması zaman almaktadır
         adapter= BasketFoodsAdapter(this@BasketActivity, foodList)
         rv_basket.adapter=adapter
-        allOrders()
-
+        btn_basket.text = this.getString(R.string.empty_basket)
     } //deleteBasket
 
     fun deleteFromBasket(food:BasketFoods){
