@@ -149,10 +149,17 @@ class BasketActivity : AppCompatActivity() {
     } //onOptionsItemSelected
 
     fun deleteBasket(){
-        foodList.forEach { each->
-            deleteFromBasket(each)
-            allOrders()
+        allOrders()
+        Log.d("takip", foodList.size.toString())
+        for(i in 0 until foodList.size){
+            deleteFromBasket(foodList[i])
+            Log.d("takip", "say")
         }
+        foodList=ArrayList() //isteklerin karşılanması zaman almaktadır
+        adapter= BasketFoodsAdapter(this@BasketActivity, foodList)
+        rv_basket.adapter=adapter
+        allOrders()
+
     } //deleteBasket
 
     fun deleteFromBasket(food:BasketFoods){
